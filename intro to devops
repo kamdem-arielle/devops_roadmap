@@ -8,7 +8,8 @@ Here we'll cover the basics of DevOps, SDLC, the DevOps lifecycle, Dev and Ops t
 
 # What is DevOps?
 
-**DevOps** is a culture, a set of practices, and tools that bring together **Development (Dev)** and **Operations (Ops)** teams to work **collaboratively** throughout the **Software Development Life Cycle (SDLC)**.
+DevOps is a combination of Development (Dev) and Operations (Ops) practices, aimed at automating and integrating the processes between software development and IT operations teams.
+The goal is to shorten the systems development life cycle (SDLC) and provide continuous delivery with high software quality.
 
 The goal of DevOps is to:
 - **Deliver software faster**
@@ -16,20 +17,27 @@ The goal of DevOps is to:
 - **Automate manual processes**
 - **Ensure systems run reliably**
 
+Traditionally, the Dev team worked in an Agile way — fast, iterative, flexible — while the Ops team worked in a Cascade (Waterfall) model — sequential, planned, and slower.
+DevOps helps to bridge the gap between these two worlds by bringing them together in a more collaborative way, often inspired by ITIL (Information Technology Infrastructure Library) best practices for service management.
+
+**DevOps** is a culture, a set of practices, and tools that bring together **Development (Dev)** and **Operations (Ops)** teams to work **collaboratively** throughout the **Software Development Life Cycle (SDLC)**.
+
+
 DevOps emphasizes **communication**, **collaboration**, **continuous integration**, **continuous delivery (CI/CD)**, and **automation**.
 
 
 # What is SDLC (Software Development Life Cycle)?
 
-**SDLC** describes **how software is planned, developed, tested, and delivered**.
+SDLC refers to the structured process used by development teams to design, develop, test, and deploy software applications.
+It ensures high quality and cost-effective software delivery through different phases:
 
-Typical SDLC phases:
 1. **Requirement gathering**
 2. **Design**
 3. **Implementation (coding)**
 4. **Testing**
 5. **Deployment**
 6. **Maintenance**
+
 
 **How it connects to DevOps:**
 > DevOps improves SDLC by making every step **automated**, **faster**, and **collaborative**. Instead of throwing code over a wall to Ops, both teams work together through every phase.
