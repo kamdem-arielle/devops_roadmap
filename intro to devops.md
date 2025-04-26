@@ -2,7 +2,7 @@
 # Introduction to DevOps
 
 Welcome to this simple introduction to **DevOps**! 🚀 
-Here we'll cover the basics of DevOps, SDLC, the DevOps lifecycle, Dev and Ops teams, Site Reliability Engineering, and Zabbix — all connected together.
+Here we'll cover the basics of DevOps, SDLC, the DevOps lifecycle, Dev and Ops teams, Site Reliability Engineering all connected together.
 
 ---
 
