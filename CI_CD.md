@@ -124,13 +124,13 @@ In simple terms:
 
 # 🔥 Real World Example
 
-Imagine you work for an online shopping platform:
+Imagine you work for an online e-learning platform:
 
-- You fix a bug where the "Buy Now" button wasn't working.
+- You fix a bug where the "view course" interface wasn't working.
 - You push the fix to GitHub.
-- CI automatically tests if the button works now.
-- CD automatically deploys the new working button to the real website.
-- Customers can now happily buy their favorite products! 🎉
+- CI automatically tests if the page works now.
+- CD automatically deploys the new working page to the e-learning website.
+- Customers can enjoy their courses.
 
 
 ---
