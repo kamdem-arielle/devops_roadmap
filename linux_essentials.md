@@ -1,7 +1,7 @@
 
 Here's a well-structured `linux.md` file in Markdown format, summarizing the key Linux concepts and commands from the provided PDF:
 
-```markdown
+
 # Linux Basics for DevOps
 
 This document covers essential Linux concepts and commands for DevOps engineers, based on the "Linux Quickstart" guide.
@@ -338,6 +338,4 @@ gunzip file.gz                  # Decompress
 | 5 | r-x        |
 | 6 | rw-        |
 | 7 | rwx        |
-```
 
-This comprehensive guide covers all the essential Linux concepts and commands from the PDF, organized in a clear, easy-to-reference format suitable for a DevOps repository.
