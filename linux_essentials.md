@@ -1,6 +1,4 @@
 
-Here's a well-structured `linux.md` file in Markdown format, summarizing the key Linux concepts and commands from the provided PDF:
-
 
 # Linux Basics for DevOps
 
