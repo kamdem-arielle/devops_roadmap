@@ -85,7 +85,7 @@ ls -a        # Show hidden files
 ```bash
 mkdir dirname       # Create directory
 touch file1 file2   # Create empty files
-cp file1 dest/      # Copy file
+cp file1 dest/      # Copy file to directory
 cp -r dir1 dest/    # Copy directory recursively
 mv file1 dest/      # Move/rename file
 rm file             # Remove file
