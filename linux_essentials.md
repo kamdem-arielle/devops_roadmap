@@ -2,7 +2,7 @@
 
 # Linux Basics for DevOps
 
-This document covers essential Linux concepts and commands for DevOps engineers, based on the "Linux Quickstart" guide.
+This document covers essential Linux concepts and commands for DevOps engineers.
 
 ## Table of Contents
 1. [Linux Introduction](#linux-introduction)
