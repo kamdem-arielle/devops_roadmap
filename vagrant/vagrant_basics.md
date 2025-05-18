@@ -220,15 +220,4 @@ Learning Vagrant sets the stage for mastering advanced DevOps tools like Ansible
 
 ---
 
-```
 
-Let me know if you want a breakdown by topic, such as:
-
-- `01-vagrant-init.md`
-- `02-networking.md`
-- `03-provisioning.md`
-- `04-multi-vm.md`
-- `05-common-errors.md`
-
-I can generate those files too!
-```
