@@ -4,7 +4,7 @@
 
 ## 📘 What is Vagrant?
 
-**Vagrant** is an open-source command-line tool developed by **HashiCorp** that enables developers and DevOps engineers to automate the creation and provisioning of lightweight, reproducible, and portable development environments.
+Vagrant is an open-source command-line tool developed by **HashiCorp** that enables developers and DevOps engineers to automate the creation and provisioning of lightweight, reproducible, and portable development environments.
 
 It works by leveraging virtual machine providers (like **VirtualBox**, **VMware**, **Hyper-V**, or **Docker**) to create and manage VMs from configuration files, allowing teams to standardize environments across all stages of development.
 
