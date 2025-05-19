@@ -36,7 +36,8 @@ It works by leveraging virtual machine providers (like **VirtualBox**, **VMware*
 
 ```
 Vagrantfile → vagrant up → Downloads Box → Uses Provider (e.g., VirtualBox) → Boots VM → Runs Provisioners → Ready to Use
-````
+
+```
 
 ---
 
