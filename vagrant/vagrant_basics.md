@@ -34,7 +34,7 @@ It works by leveraging virtual machine providers (like **VirtualBox**, **VMware*
 
 ## 🔧 How Vagrant Works (Simplified Flow)
 
-```text
+```
 Vagrantfile → vagrant up → Downloads Box → Uses Provider (e.g., VirtualBox) → Boots VM → Runs Provisioners → Ready to Use
 ````
 
