@@ -35,11 +35,11 @@ The Vagrant Hostmanager plugin is essential because:
 
 Create a file named `Vagrantfile` with the following content:
 
-\`\`\`ruby
+```ruby
 Vagrant.configure("2") do |config|
   config.hostmanager.enabled = true 
   config.hostmanager.manage_host = true
-  
+
 ### DB vm  ####
   config.vm.define "db01" do |db01|
     db01.vm.box = "centos/stream9"
@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
      vb.memory = "600"
    end
   end
-  
+
 ### Memcache vm  #### 
   config.vm.define "mc01" do |mc01|
     mc01.vm.box = "centos/stream9"
@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
      vb.memory = "600"
    end
   end
-  
+
 ### RabbitMQ vm  ####
   config.vm.define "rmq01" do |rmq01|
     rmq01.vm.box = "centos/stream9"
@@ -69,7 +69,7 @@ Vagrant.configure("2") do |config|
      vb.memory = "600"
    end
   end
-  
+
 ### tomcat vm ###
    config.vm.define "app01" do |app01|
     app01.vm.box = "centos/stream9"
@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
      vb.memory = "800"
    end
    end
-   
+
 ### Nginx VM ###
   config.vm.define "web01" do |web01|
     web01.vm.box = "ubuntu/jammy64"
@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
    end
   end
 end
-\`\`\`
+```
 
 ### 1.3 Starting the Virtual Machines
 
