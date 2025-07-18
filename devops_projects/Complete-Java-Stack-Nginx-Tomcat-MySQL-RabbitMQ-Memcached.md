@@ -109,96 +109,156 @@ This command will:
 ## Step 2: Database Server Setup (db01)
 
 SSH into the database server:
+**This command connects you to the `db01` VM using SSH, allowing you to run commands directly on the database server.**
 ```bash
 vagrant ssh db01
 ```
 
 ### 2.1 System Updates and Repository Setup
 
+**Update all installed packages to their latest versions, ensuring your system is secure and up-to-date.**
 ```bash
 # Update the system packages
 dnf update -y
+```
 
+**Install the Extra Packages for Enterprise Linux (EPEL) repository, which provides access to additional software not included in the default CentOS repositories.**
+```bash
 # Install EPEL repository for additional packages
 dnf install epel-release -y
 ```
 
-This step ensures your system is up-to-date and has access to additional packages from the EPEL repository.
-
 ### 2.2 Installing MariaDB Server
 
+**Install MariaDB server (the database engine) and Git (useful for version control or downloading code).**
 ```bash
 # Install MariaDB and Git
 dnf install git mariadb-server -y
+```
 
-# Start and enable MariaDB service
+**Start the MariaDB database service immediately.**
+```bash
+# Start MariaDB service
 systemctl start mariadb
+```
+
+**Configure MariaDB to start automatically every time the server boots.**
+```bash
+# Enable MariaDB service
 systemctl enable mariadb
 ```
 
-These commands:
-- Install MariaDB server and Git
-- Start the MariaDB service
-- Configure MariaDB to start automatically on system boot
-
 ### 2.3 Securing and Configuring MariaDB
 
+**Run a script to help you secure your MariaDB installation by setting a root password, removing anonymous users, disabling remote root login, and removing test databases.**
 ```bash
 # Run the security script
 mysql_secure_installation
+```
 
+**Log into MariaDB as the root user with administrative privileges.**
+```bash
 # Access MariaDB
 mysql -u root -padmin123
+```
 
-# Create database and user
+**Create a new database named `accounts` to store your application's data.**
+```bash
+# Create database
 mysql> create database accounts;
+```
+
+**Grant all privileges on the `accounts` database to the `admin` user when connecting from `localhost`.**
+```bash
+# Grant privileges for local connections
 mysql> grant all privileges on accounts.* TO 'admin'@'localhost' identified by 'admin123';
+```
+
+**Allow the `admin` user to connect to the database from any host (useful for distributed applications).**
+```bash
+# Grant privileges for remote connections
 mysql> grant all privileges on accounts.* TO 'admin'@'%' identified by 'admin123';
+```
+
+**Reload the grant tables to apply changes immediately.**
+```bash
+# Apply privilege changes
 mysql> FLUSH PRIVILEGES;
+```
+
+**Exit the MariaDB shell after completing the initial database setup.**
+```bash
+# Exit MariaDB
 mysql> exit;
+```
 
-# Import database schema (assuming database.sql exists)
+**Load the structure (tables, etc.) and possibly initial data for your application from a file called `database.sql`.**
+```bash
+# Import database schema
 mysql -u root -padmin123 accounts < database.sql
+```
 
+**Log into the `accounts` database to verify that the schema was imported correctly.**
+```bash
 # Verify the import
 mysql -u root -padmin123 accounts
-mysql> show tables;
-mysql> exit;
+```
 
+**List all tables in the current database to ensure they were created successfully.**
+```bash
+# Show tables
+mysql> show tables;
+```
+
+**Exit the MariaDB shell after verifying the database setup.**
+```bash
+# Exit MariaDB
+mysql> exit;
+```
+
+**Restart the MariaDB service to ensure all changes are applied and the service is running with the latest configuration.**
+```bash
 # Restart MariaDB
 systemctl restart mariadb
 ```
 
-This sequence:
-1. Secures the MariaDB installation
-2. Creates a new database named 'accounts'
-3. Creates an admin user with necessary privileges
-4. Imports the database schema
-5. Verifies the database setup
-
 ### 2.4 Configuring Firewall
 
+**Start the firewall service to protect your server by controlling incoming and outgoing network traffic.**
 ```bash
-# Start and enable firewall
+# Start firewall
 systemctl start firewalld
-systemctl enable firewalld
-
-# Check active zones
-firewall-cmd --get-active-zones
-
-# Allow MariaDB port
-firewall-cmd --zone=public --add-port=3306/tcp --permanent
-firewall-cmd --reload
-
-# Restart MariaDB to apply all changes
-systemctl restart mariadb
 ```
 
-These commands:
-1. Enable and start the firewall service
-2. Open port 3306 (MySQL/MariaDB default port)
-3. Apply the firewall changes
-4. Restart MariaDB to ensure all configurations are active
+**Ensure the firewall starts automatically on boot.**
+```bash
+# Enable firewall
+systemctl enable firewalld
+```
+
+**Check which firewall zones are active to understand which network interfaces are protected and how.**
+```bash
+# Check active zones
+firewall-cmd --get-active-zones
+```
+
+**Open the MariaDB port (3306) in the firewall to allow other VMs or hosts to connect.**
+```bash
+# Allow MariaDB port
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+```
+
+**Reload the firewall configuration to apply any changes made to the firewall rules.**
+```bash
+# Reload firewall
+firewall-cmd --reload
+```
+
+**Restart the MariaDB service to ensure it is accessible with the new firewall rules.**
+```bash
+# Restart MariaDB
+systemctl restart mariadb
+```
 
 The database server is now ready to accept connections from other services in our stack. In the next sections, we'll set up the remaining services (Memcached, RabbitMQ, Tomcat, and Nginx).
 
