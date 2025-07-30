@@ -95,7 +95,7 @@ end
 
 ### 1.3 Starting the Virtual Machines
 
-To create and start all VMs, run:
+To create and start all VMs,go to the directory containing the vagrant file config and run the command below:
 ```bash
 vagrant up
 ```
@@ -260,9 +260,7 @@ firewall-cmd --reload
 systemctl restart mariadb
 ```
 
-The database server is now ready to accept connections from other services in our stack. In the next sections, we'll set up the remaining services (Memcached, RabbitMQ, Tomcat, and Nginx).
-
-Would you like me to continue with the setup instructions for the remaining services?
+The database server is now ready to accept connections from other services in our stack.
 
 ## Step 3: Memcached Server Setup (mc01)
 
@@ -379,4 +377,143 @@ firewall-cmd --runtime-to-permanent
 # Start Memcached with custom ports
 sudo memcached -p 11211 -U 11111 -u memcached -d
 ```
+
+## Step 4: RabbitMQ Server Setup (rmq01)
+
+SSH into the RabbitMQ server:
+**This command connects you to the `rmq01` VM using SSH, allowing you to run commands directly on the RabbitMQ server.**
+```bash
+vagrant ssh rmq01
+```
+
+### 4.1 Verifying Hosts Entry
+
+**Check the `/etc/hosts` file to ensure it contains the correct IP and hostname mappings for all VMs.**
+```bash
+# Verify hosts entry
+cat /etc/hosts
+```
+
+**If entries are missing, update the `/etc/hosts` file with the correct IP and hostnames.**
+
+### 4.2 Updating the OS
+
+**Update all installed packages to their latest versions, ensuring your system is secure and up-to-date.**
+```bash
+# Update the system packages
+sudo dnf update -y
+```
+
+### 4.3 Installing RabbitMQ
+
+**Install the Extra Packages for Enterprise Linux (EPEL) repository, which provides access to additional software not included in the default CentOS repositories.**
+```bash
+# Install EPEL repository
+sudo dnf install epel-release -y
+```
+
+**Install `wget`, a utility for downloading files from the web, which may be required for additional setup steps.**
+```bash
+# Install wget
+sudo dnf install wget -y
+```
+
+**Add the RabbitMQ 3.8 repository to the system to ensure the correct version of RabbitMQ is installed.**
+```bash
+# Add RabbitMQ repository
+sudo dnf -y install centos-release-rabbitmq-38
+```
+
+**Install RabbitMQ server from the newly added repository.**
+```bash
+# Install RabbitMQ server
+sudo dnf --enablerepo=centos-rabbitmq-38 -y install rabbitmq-server
+```
+
+**Start the RabbitMQ service immediately and enable it to start automatically on boot.**
+```bash
+# Start and enable RabbitMQ service
+sudo systemctl enable --now rabbitmq-server
+```
+
+### 4.4 Configuring RabbitMQ
+
+**Allow remote access to RabbitMQ by modifying the configuration to remove loopback restrictions.**
+```bash
+# Allow remote access to RabbitMQ
+sudo sh -c 'echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config'
+```
+
+**Create a new RabbitMQ user named `test` with the password `test`.**
+```bash
+# Add RabbitMQ user
+test
+sudo rabbitmqctl add_user test test
+```
+
+**Grant administrator privileges to the `test` user.**
+```bash
+# Set user as administrator
+sudo rabbitmqctl set_user_tags test administrator
+```
+
+**Set permissions for the `test` user to access all resources.**
+```bash
+# Set permissions for user
+rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
+```
+
+**Restart the RabbitMQ service to apply the configuration changes.**
+```bash
+# Restart RabbitMQ service
+sudo systemctl restart rabbitmq-server
+```
+
+### 4.5 Configuring Firewall
+
+**Start the firewall service to protect your server by controlling incoming and outgoing network traffic.**
+```bash
+# Start firewall
+sudo systemctl start firewalld
+```
+
+**Ensure the firewall starts automatically on boot.**
+```bash
+# Enable firewall
+sudo systemctl enable firewalld
+```
+
+**Open TCP port 5672 in the firewall to allow other VMs or hosts to connect to RabbitMQ.**
+```bash
+# Allow RabbitMQ port
+firewall-cmd --add-port=5672/tcp
+```
+
+**Make the firewall rule permanent.**
+```bash
+# Make firewall rule permanent
+firewall-cmd --runtime-to-permanent
+```
+
+**Start the RabbitMQ service to ensure it is running.**
+```bash
+# Start RabbitMQ service
+sudo systemctl start rabbitmq-server
+```
+
+**Enable RabbitMQ to start automatically on boot.**
+```bash
+# Enable RabbitMQ service
+sudo systemctl enable rabbitmq-server
+```
+
+**Check the status of the RabbitMQ service to ensure it is running.**
+```bash
+# Check RabbitMQ status
+sudo systemctl status rabbitmq-server
+```
+
+RabbitMQ is now installed and configured on your server. It is ready to handle messaging for your application stack.
+
+
 
