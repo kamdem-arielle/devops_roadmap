@@ -515,5 +515,180 @@ sudo systemctl status rabbitmq-server
 
 RabbitMQ is now installed and configured on your server. It is ready to handle messaging for your application stack.
 
+## Step 5: Tomcat Application Server Setup (app01)
+
+SSH into the Tomcat application server:
+**This command connects you to the `app01` VM using SSH, allowing you to run commands directly on the Tomcat application server.**
+```bash
+vagrant ssh app01
+```
+
+### 5.1 Verifying Hosts Entry
+
+**Check the `/etc/hosts` file to ensure it contains the correct IP and hostname mappings for all VMs.**
+```bash
+# Verify hosts entry
+cat /etc/hosts
+```
+
+**If entries are missing, update the `/etc/hosts` file with the correct IP and hostnames.**
+
+### 5.2 Updating the OS
+
+**Update all installed packages to their latest versions, ensuring your system is secure and up-to-date.**
+```bash
+# Update the system packages
+sudo dnf update -y
+```
+
+### 5.3 Installing Dependencies
+
+**Install the Extra Packages for Enterprise Linux (EPEL) repository, which provides access to additional software not included in the default CentOS repositories.**
+```bash
+# Install EPEL repository
+sudo dnf install epel-release -y
+```
+
+**Install Java 17 OpenJDK (Java Runtime Environment and Development Kit) which is required to run Tomcat and Java applications.**
+```bash
+# Install Java 17 OpenJDK
+sudo dnf -y install java-17-openjdk java-17-openjdk-devel
+```
+
+**Install Git (for version control) and wget (for downloading files from the internet).**
+```bash
+# Install Git and wget
+sudo dnf install git wget -y
+```
+
+### 5.4 Downloading and Installing Tomcat
+
+**Change to the `/tmp` directory which is used for temporary files and downloads.**
+```bash
+# Change to temporary directory
+cd /tmp/
+```
+
+**Download the Apache Tomcat 10.1.26 archive from the official Apache repository.**
+```bash
+# Download Tomcat
+wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.26/bin/apache-tomcat-10.1.26.tar.gz
+```
+
+**Extract the downloaded Tomcat archive file to access its contents.**
+```bash
+# Extract Tomcat archive
+tar xzvf apache-tomcat-10.1.26.tar.gz
+```
+
+### 5.5 Setting Up Tomcat User and Directory
+
+**Create a dedicated system user named `tomcat` with a home directory at `/usr/local/tomcat` and no shell access for security purposes.**
+
+```bash
+# Add tomcat user
+sudo useradd --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
+```
+
+**Copy all Tomcat files from the temporary extraction directory to the tomcat user's home directory.**
+```bash
+# Copy Tomcat files to home directory
+sudo cp -r /tmp/apache-tomcat-10.1.26/* /usr/local/tomcat/
+```
+
+**Change ownership of all files in the Tomcat directory to the tomcat user and group for proper permissions.**
+```bash
+# Set ownership to tomcat user
+sudo chown -R tomcat.tomcat /usr/local/tomcat
+```
+
+### 5.6 Creating Tomcat Service
+
+**Create a systemd service file to manage Tomcat as a system service.**
+```bash
+# Create tomcat service file
+vi /etc/systemd/system/tomcat.service
+```
+
+**Add the following content to the service file to define how systemd should manage the Tomcat service:**
+```ini
+[Unit]
+Description=Tomcat
+After=network.target
+
+[Service]
+User=tomcat
+Group=tomcat
+WorkingDirectory=/usr/local/tomcat
+Environment=JAVA_HOME=/usr/lib/jvm/jre
+Environment=CATALINA_PID=/var/tomcat/%i/run/tomcat.pid
+Environment=CATALINA_HOME=/usr/local/tomcat
+Environment=CATALINE_BASE=/usr/local/tomcat
+ExecStart=/usr/local/tomcat/bin/catalina.sh run
+ExecStop=/usr/local/tomcat/bin/shutdown.sh
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**This service configuration includes:**
+- **Unit section**: Defines service description and dependencies
+- **Service section**: Specifies how to run Tomcat (user, environment variables, start/stop commands)
+- **Install section**: Defines when the service should be started during boot
+
+### 5.7 Starting and Enabling Tomcat Service
+
+**Reload systemd to recognize the new service file you just created.**
+```bash
+# Reload systemd files
+sudo systemctl daemon-reload
+```
+
+**Start the Tomcat service immediately.**
+```bash
+# Start Tomcat service
+sudo systemctl start tomcat
+```
+
+**Enable Tomcat to start automatically every time the server boots.**
+```bash
+# Enable Tomcat service
+sudo systemctl enable tomcat
+```
+
+### 5.8 Configuring Firewall
+
+**Start the firewall service to protect your server by controlling incoming and outgoing network traffic.**
+```bash
+# Start firewall
+sudo systemctl start firewalld
+```
+
+**Ensure the firewall starts automatically on boot.**
+```bash
+# Enable firewall
+sudo systemctl enable firewalld
+```
+
+**Check which firewall zones are active to understand which network interfaces are protected.**
+```bash
+# Check active zones
+sudo firewall-cmd --get-active-zones
+```
+
+**Open TCP port 8080 in the firewall to allow access to the Tomcat web server.**
+```bash
+# Allow Tomcat port
+sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+```
+
+**Reload the firewall configuration to apply the new rule.**
+```bash
+# Reload firewall
+sudo firewall-cmd --reload
+```
+
 
 
