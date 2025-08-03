@@ -596,10 +596,11 @@ sudo useradd --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
 sudo cp -r /tmp/apache-tomcat-10.1.26/* /usr/local/tomcat/
 ```
 
-**Change ownership of all files in the Tomcat directory to the tomcat user and group for proper permissions.**
+**Change ownership of all files in the Tomcat directory to the tomcat user and group for proper permissions.Also update the directory permissions for easy access if necessary.**
 ```bash
 # Set ownership to tomcat user
 sudo chown -R tomcat.tomcat /usr/local/tomcat
+sudo chmod -R 755 /usr/local/tomcat
 ```
 
 ### 5.6 Creating Tomcat Service
@@ -690,5 +691,134 @@ sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
 sudo firewall-cmd --reload
 ```
 
+### 5.9 Maven Setup and Application Deployment
 
+**Change to the `/tmp` directory to download Maven build tool.**
+```bash
+# Change to temporary directory
+cd /tmp/
+```
+
+**Download Apache Maven 3.9.9, a build automation tool used primarily for Java projects.**
+```bash
+# Download Maven
+wget https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip
+```
+
+**Extract the Maven archive to access its contents.**
+```bash
+# Extract Maven archive
+unzip apache-maven-3.9.9-bin.zip
+```
+
+**Copy Maven to a permanent location in the system directory for global access.**
+```bash
+# Copy Maven to system directory
+sudo cp -r apache-maven-3.9.9 /usr/local/maven3.9
+```
+
+**Set Maven JVM options to allocate 512MB of maximum heap memory for optimal performance during builds.**
+```bash
+# Set Maven JVM options
+export MAVEN_OPTS="-Xmx512m"
+```
+
+### 5.10 Downloading Source Code
+
+**Clone the VProfile project repository from GitHub, specifically the `local` branch which contains the configuration for our local development setup.**
+```bash
+# Download source code
+git clone -b local https://github.com/hkhcoder/vprofile-project.git
+```
+
+**Navigate to the project directory to work with the application source code.**
+```bash
+# Change to project directory
+cd vprofile-project
+```
+
+### 5.11 Updating Application Configuration
+
+**Edit the application properties file to configure database and service connections.**
+```bash
+# Update configuration file
+vim src/main/resources/application.properties
+```
+
+**Update the file with the following backend server details to connect to your infrastructure:**
+```properties
+# Database Configuration
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://db01:3306/accounts?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+jdbc.username=admin
+jdbc.password=admin123
+
+# Memcached Configuration
+memcached.active.host=mc01
+memcached.active.port=11211
+
+# RabbitMQ Configuration
+rabbitmq.address=rmq01
+rabbitmq.port=5672
+rabbitmq.username=test
+rabbitmq.password=test
+```
+
+**This configuration connects your application to:**
+- **Database**: MariaDB running on `db01` server
+- **Cache**: Memcached running on `mc01` server  
+- **Message Queue**: RabbitMQ running on `rmq01` server
+
+### 5.12 Building the Application
+
+**Build the Java application using Maven, which will compile the source code, run tests, and package it into a WAR file.**
+```bash
+# Build the application
+/usr/local/maven3.9/bin/mvn install
+```
+
+**This command will:**
+- Download all required dependencies
+- Compile the Java source code
+- Run unit tests
+- Package the application into a WAR (Web Application Archive) file
+- Store the built artifact in the `target/` directory
+
+### 5.13 Deploying the Application
+
+**Stop the Tomcat service before deploying the new application to avoid conflicts.**
+```bash
+# Stop Tomcat service
+sudo systemctl stop tomcat
+```
+
+**Remove the default Tomcat ROOT application to replace it with our custom application.**
+```bash
+# Remove default ROOT application
+sudo rm -rf /usr/local/tomcat/webapps/ROOT*
+```
+
+**Copy the built WAR file to Tomcat's webapps directory as ROOT.war, making it the default application.**
+```bash
+# Deploy application
+sudo cp target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
+```
+
+**Start the Tomcat service to begin serving the new application.**
+```bash
+# Start Tomcat service
+sudo systemctl start tomcat
+```
+
+**Set proper ownership of the webapps directory to the tomcat user for security and proper operation.**
+```bash
+# Set ownership to tomcat user
+sudo chown tomcat.tomcat /usr/local/tomcat/webapps -R
+```
+
+**Restart Tomcat to ensure all changes are properly applied and the application is fully deployed.**
+```bash
+# Restart Tomcat service
+sudo systemctl restart tomcat
+```
 
