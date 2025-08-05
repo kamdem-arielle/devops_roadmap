@@ -1,6 +1,6 @@
-# 🚀Complete Java Stack Setup with Nginx, Tomcat, MySQL, RabbitMQ, and Memcached
+# 🚀Complete Java Stack Setup with Nginx, Tomcat, MySQL, RabbitMQ, and Memcached 
 
-This guide provides a detailed walkthrough for setting up a complete Java application stack using multiple virtual machines (VMs). We'll start with a manual setup and later explore automation options.
+This guide is designed for beginners who are new to DevOps and want to learn by building a real-world application stack.It provides a detailed walkthrough for setting up a complete Java application stack using multiple virtual machines (VMs).
 
 ```mermaid
 graph TD
@@ -21,19 +21,23 @@ Hey there! I'm excited to walk you through building a **professional-grade Java 
 - ⚡ **Memcached** supercharging performance  
 - 🐇 **RabbitMQ** managing messages smoothly 
 
-## 📚 Navigation
 
-| Step | Section | Description |
-|------|---------|-------------|
-| **🛠️** | [Lab Setup](#step-1-setting-up-the-development-environment) | Configure VMs and environment |
-| **🗃️** | [Database Configuration](#step-2-database-server-setup-db01) | Set up MySQL/MariaDB |
-| **⚡** | [Memcached for Speed](#step-3-memcached-server-setup-mc01) | Configure caching layer |
-| **🐇** | [RabbitMQ for Tasks](#step-4-rabbitmq-server-setup-rmq01) | Set up message queue |
-| **🚀** | [Tomcat Deployment](#step-5-tomcat-application-server-setup-app01) | Deploy Java application |
-| **🌐** | [Nginx as Reverse Proxy](#step-6-nginx-web-server-setup-web01) | Configure web server |
-| **🎉** | [Final Test](#conclusion) | Verify complete setup |
+##  Navigation
+
+| Section | Description |
+|---------|-------------|
+| [Lab Setup](#step-1-setting-up-the-development-environment) | Configure VMs and environment |
+| [Database Configuration](#step-2-database-server-setup-db01) | Set up MySQL/MariaDB |
+| [Memcached for Speed](#step-3-memcached-server-setup-mc01) | Configure caching layer |
+| [RabbitMQ for Tasks](#step-4-rabbitmq-server-setup-rmq01) | Set up message queue |
+| [Tomcat Deployment](#step-5-tomcat-application-server-setup-app01) | Deploy Java application |
+| [Nginx as Reverse Proxy](#step-6-nginx-web-server-setup-web01) | Configure web server |
+| [Final Test](#conclusion) | Verify complete setup |
+
 
 ---
+
+
 
 ## Infrastructure Overview
 
