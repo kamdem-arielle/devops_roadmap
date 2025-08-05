@@ -19,7 +19,7 @@ graph TD
 ```
 
 
-##  Navigation
+##  🧭 Navigation Quick Links
 
 | Section | Description |
 |---------|-------------|
