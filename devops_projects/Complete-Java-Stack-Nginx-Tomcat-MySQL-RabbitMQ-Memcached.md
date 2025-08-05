@@ -1,6 +1,13 @@
 # 🚀Complete Java Stack Setup with Nginx, Tomcat, MySQL, RabbitMQ, and Memcached 
 
-This guide is designed for beginners who are new to DevOps and want to learn by building a real-world application stack.It provides a detailed walkthrough for setting up a complete Java application stack using multiple virtual machines (VMs).
+This guide is designed for beginners who are new to DevOps and want to learn by building a real-world application stack.It provides a detailed walkthrough for setting up a complete Java application stack using multiple virtual machines (VMs).By the end, you'll have a fully working system with:
+
+- 🌐 **Nginx** as your web gateway  
+- 🚀 **Tomcat** serving blazing-fast Java apps  
+- 🗃️ **MySQL** handling data like a champ  
+- ⚡ **Memcached** supercharging performance  
+- 🐇 **RabbitMQ** managing messages smoothly 
+
 
 ```mermaid
 graph TD
@@ -10,16 +17,6 @@ graph TD
     C --> E[Memcached]
     C --> F[RabbitMQ]
 ```
-
-## 👋 Welcome Future DevOps Engineer!
-
-Hey there! I'm excited to walk you through building a **professional-grade Java application stack**. By the end, you'll have a fully working system with:
-
-- 🌐 **Nginx** as your web gateway  
-- 🚀 **Tomcat** serving blazing-fast Java apps  
-- 🗃️ **MySQL** handling data like a champ  
-- ⚡ **Memcached** supercharging performance  
-- 🐇 **RabbitMQ** managing messages smoothly 
 
 
 ##  Navigation
@@ -34,8 +31,8 @@ Hey there! I'm excited to walk you through building a **professional-grade Java 
 | [Nginx as Reverse Proxy](#step-6-nginx-web-server-setup-web01) | Configure web server |
 | [Final Test](#conclusion) | Verify complete setup |
 
-
----
+<br/>
+<br/>
 
 
 
