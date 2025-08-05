@@ -433,7 +433,8 @@ sudo dnf --enablerepo=centos-rabbitmq-38 -y install rabbitmq-server
 **Start the RabbitMQ service immediately and enable it to start automatically on boot.**
 ```bash
 # Start and enable RabbitMQ service
-sudo systemctl enable --now rabbitmq-server
+sudo systemctl start rabbitmq-server
+sudo systemctl enable rabbitmq-server
 ```
 
 ### 4.4 Configuring RabbitMQ
@@ -460,7 +461,7 @@ sudo rabbitmqctl set_user_tags test administrator
 **Set permissions for the `test` user to access all resources.**
 ```bash
 # Set permissions for user
-rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
+sudo rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
 ```
 
 **Restart the RabbitMQ service to apply the configuration changes.**
@@ -821,4 +822,193 @@ sudo chown tomcat.tomcat /usr/local/tomcat/webapps -R
 # Restart Tomcat service
 sudo systemctl restart tomcat
 ```
+
+### 5.14 Verifying Tomcat Deployment
+
+**Check the status of the Tomcat service to ensure it is running properly.**
+```bash
+# Check Tomcat status
+sudo systemctl status tomcat
+```
+
+**Monitor the Tomcat logs to verify successful application deployment.**
+```bash
+# View Tomcat logs
+sudo tail -f /usr/local/tomcat/logs/catalina.out
+```
+
+**Test the application locally to ensure it's working correctly.**
+```bash
+# Test local connection
+curl http://localhost:8080
+```
+
+Tomcat is now successfully configured with the VProfile application deployed and running.
+
+## Step 6: Nginx Web Server Setup (web01)
+
+SSH into the Nginx web server:
+**This command connects you to the `web01` VM using SSH, allowing you to run commands directly on the Nginx web server.**
+```bash
+vagrant ssh web01
+```
+
+**Switch to root user for administrative tasks.**
+```bash
+# Switch to root user
+sudo -i
+```
+
+### 6.1 Verifying Hosts Entry
+
+**Check the `/etc/hosts` file to ensure it contains the correct IP and hostname mappings for all VMs.**
+```bash
+# Verify hosts entry
+cat /etc/hosts
+```
+
+**If entries are missing, update the `/etc/hosts` file with the correct IP and hostnames.**
+
+### 6.2 Updating the OS
+
+**Update the package repository information to get the latest package versions.**
+```bash
+# Update package repository
+apt update
+```
+
+**Upgrade all installed packages to their latest versions for security and stability.**
+```bash
+# Upgrade system packages
+apt upgrade
+```
+
+### 6.3 Installing Nginx
+
+**Install Nginx web server, which will act as a reverse proxy and load balancer for our Java application.**
+```bash
+# Install Nginx
+apt install nginx -y
+```
+
+### 6.4 Creating Nginx Configuration
+
+**Create a new Nginx configuration file for the VProfile application.**
+```bash
+# Create Nginx configuration file
+vi /etc/nginx/sites-available/vproapp
+```
+
+**Add the following content to configure Nginx as a reverse proxy for the Tomcat application:**
+```nginx
+upstream vproapp {
+    server app01:8080;
+}
+
+server {
+    listen 80;
+    location / {
+        proxy_pass http://vproapp;
+    }
+}
+```
+
+**This configuration includes:**
+- **Upstream block**: Defines the backend server (app01:8080) where Tomcat is running
+- **Server block**: Configures Nginx to listen on port 80 and forward all requests to the upstream server
+- **Location block**: Specifies that all requests (/) should be proxied to the backend application
+
+### 6.5 Activating the Configuration
+
+**Remove the default Nginx configuration to avoid conflicts.**
+```bash
+# Remove default Nginx configuration
+rm -rf /etc/nginx/sites-enabled/default
+```
+
+**Create a symbolic link to activate the VProfile application configuration.**
+```bash
+# Activate the new configuration
+ln -s /etc/nginx/sites-available/vproapp /etc/nginx/sites-enabled/vproapp
+```
+
+### 6.6 Testing and Starting Nginx
+
+**Test the Nginx configuration syntax to ensure there are no errors.**
+```bash
+# Test Nginx configuration
+nginx -t
+```
+
+**Restart Nginx to apply the new configuration and start serving the application.**
+```bash
+# Restart Nginx service
+systemctl restart nginx
+```
+
+**Enable Nginx to start automatically on boot.**
+```bash
+# Enable Nginx service
+systemctl enable nginx
+```
+
+**Check the status of Nginx to ensure it's running properly.**
+```bash
+# Check Nginx status
+systemctl status nginx
+```
+
+### 6.7 Verifying Nginx Setup
+
+**Test the Nginx configuration locally to ensure it's properly forwarding requests.**
+```bash
+# Test local connection through Nginx
+curl http://localhost
+```
+
+**Check Nginx access and error logs for any issues.**
+```bash
+# View Nginx access logs
+tail -f /var/log/nginx/access.log
+
+# View Nginx error logs
+tail -f /var/log/nginx/error.log
+```
+
+### 6.8 Accessing the Application
+
+**Now you can access the VProfile application through the Nginx web server from your host machine browser:**
+- **URL**: `http://192.168.56.11`
+- **This will forward requests to**: `http://app01:8080` (Tomcat server)
+
+**Application Login Credentials:**
+- **Username**: `admin_vp`
+- **Password**: `admin_vp`
+
+**The complete request flow is now:**
+1. **Browser** → `http://192.168.56.11` (Nginx web server)
+2. **Nginx** → `http://app01:8080` (Tomcat application server)
+3. **Tomcat** → Connects to backend services (database, cache, message queue)
+
+
+
+## Conclusion
+
+Congratulations! You have successfully set up a complete Java application stack with:
+- **Nginx** as a reverse proxy web server
+- **Tomcat** as the Java application server
+- **MariaDB/MySQL** as the database server
+- **Memcached** for caching
+- **RabbitMQ** for message queuing
+
+
+
+## Next Steps and Further Learning
+
+To view the complete tutorial and explore more advanced DevOps concepts, check out the comprehensive course: https://www.udemy.com/course/decodingdevops/
+
+
+
+
+
 
