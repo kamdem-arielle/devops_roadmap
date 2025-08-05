@@ -2,14 +2,39 @@
 
 This guide provides a detailed walkthrough for setting up a complete Java application stack using multiple virtual machines (VMs). We'll start with a manual setup and later explore automation options.
 
+```mermaid
+graph TD
+    A[User] --> B{Nginx}
+    B --> C[Tomcat App]
+    C --> D[(MySQL)]
+    C --> E[Memcached]
+    C --> F[RabbitMQ]
+```
+
+## 👋 Welcome Future DevOps Engineer!
+
+Hey there! I'm excited to walk you through building a **professional-grade Java application stack**. By the end, you'll have a fully working system with:
+
+- 🌐 **Nginx** as your web gateway  
+- 🚀 **Tomcat** serving blazing-fast Java apps  
+- 🗃️ **MySQL** handling data like a champ  
+- ⚡ **Memcached** supercharging performance  
+- 🐇 **RabbitMQ** managing messages smoothly 
+
+
 ## Infrastructure Overview
 
 Our setup consists of 5 VMs, each serving a specific purpose:
-- `web01` (Ubuntu): Frontend web server running Nginx
-- `app01` (CentOS): Application server running Tomcat
-- `db01` (CentOS): Database server running MariaDB
-- `mc01` (CentOS): Caching server running Memcached
-- `rmq01` (CentOS): Message broker running RabbitMQ
+**Meet your new servers:**
+| VM Name | IP Address | Role | OS | Memory |
+|---------|------------|------|----|--------|
+| `web01` | 192.168.56.11 | Nginx | Ubuntu | 800MB |
+| `app01` | 192.168.56.12 | Tomcat | CentOS | 800MB |
+| `db01`  | 192.168.56.15 | MySQL | CentOS | 600MB |
+| `mc01`  | 192.168.56.14 | Memcached | CentOS | 600MB |
+| `rmq01` | 192.168.56.13 | RabbitMQ | CentOS | 600MB |
+
+---
 
 ## Prerequisites
 
@@ -994,370 +1019,12 @@ tail -f /var/log/nginx/error.log
 
 ## Conclusion
 
-Congratulations! You have successfully set up a complete Java application stack with:
-- **Nginx** as a reverse proxy web server
-- **Tomcat** as the Java application server
-- **MariaDB/MySQL** as the database server
-- **Memcached** for caching
-- **RabbitMQ** for message queuing
+You've just built a **professional Java stack**!
 
 
 
 ## Next Steps and Further Learning
 
 To view the complete tutorial and explore more advanced DevOps concepts, check out the comprehensive course: https://www.udemy.com/course/decodingdevops/
-
-
-
-# 🚀 Java Full Stack Deployment: The Ultimate Beginner's Guide  
-### Build Like a DevOps Pro - From Zero to Production!
-
-![Banner Image](https://via.placeholder.com/1200x400?text=Java+Full+Stack+Deployment)  
-*(Imagine this as an exciting tech blueprint graphic showing all components working together)*
-
----
-
-## 👋 Welcome Future DevOps Engineer!
-
-Hey there! I'm excited to walk you through building a **professional-grade Java application stack**. By the end, you'll have a fully working system with:
-
-- 🌐 **Nginx** as your web gateway  
-- 🚀 **Tomcat** serving blazing-fast Java apps  
-- 🗃️ **MySQL** handling data like a champ  
-- ⚡ **Memcached** supercharging performance  
-- 🐇 **RabbitMQ** managing messages smoothly  
-
-This isn't just another tutorial - it's your **launchpad into real-world DevOps**!
-
----
-
-## 🧭 Navigation Quick Links
-
-1. [🛠️ What We're Building](#-architecture-overview)
-2. [🔧 Setup Your Lab](#-lab-setup)
-3. [🗃️ Database Magic](#-database-setup)
-4. ⚡ [Cache Like a Pro](#-memcached-configuration)
-5. 🐇 [Message Queue Mastery](#-rabbitmq-setup)
-6. 🚀 [Tomcat Deployment](#-tomcat-application-server)
-7. 🌐 [Nginx Reverse Proxy](#-nginx-web-server)
-8. 🎉 [Celebration Time!](#-verification)
-
----
-
-## 🏗️ Architecture Overview
-
-Let me paint you a picture of what we're creating:
-
-```mermaid
-graph TD
-    A[User] --> B{Nginx}
-    B --> C[Tomcat App]
-    C --> D[(MySQL)]
-    C --> E[Memcached]
-    C --> F[RabbitMQ]
-```
-
-**Why this rocks:**
-- 💡 **Nginx** handles traffic efficiently
-- 🔄 **Tomcat** runs your Java app smoothly
-- 🗄️ **MySQL** stores data reliably
-- 🚀 **Memcached** makes everything faster
-- ✉️ **RabbitMQ** manages background tasks
-
----
-
-## 🖥️ Lab Setup
-
-### 1. Fire Up Your Machines
-
-First, let's create our playground:
-
-```bash
-# Install Vagrant's magic DNS helper
-vagrant plugin install vagrant-hostmanager
-
-# Create and start all VMs (go grab some coffee!)
-vagrant up
-```
-
-**Meet your new servers:**
-| VM Name | IP Address | Role | OS | Memory |
-|---------|------------|------|----|--------|
-| `web01` | 192.168.56.11 | Nginx | Ubuntu | 800MB |
-| `app01` | 192.168.56.12 | Tomcat | CentOS | 800MB |
-| `db01`  | 192.168.56.15 | MySQL | CentOS | 600MB |
-| `mc01`  | 192.168.56.14 | Memcached | CentOS | 600MB |
-| `rmq01` | 192.168.56.13 | RabbitMQ | CentOS | 600MB |
-
----
-
-## 🗃️ Database Setup (db01)
-
-### Let's Build Our Data Fortress!
-
-```bash
-vagrant ssh db01
-```
-
-**Step 1:** Install and secure MySQL
-
-```bash
-sudo dnf install mariadb-server -y
-sudo systemctl start mariadb
-
-# This is like setting up a vault combination
-sudo mysql_secure_installation
-```
-
-**Pro Tip:** When asked, say YES to:
-- Remove anonymous users? 🔒
-- Disallow root login remotely? 🛑
-- Remove test database? 🧹
-
-**Step 2:** Create our app's database
-
-```sql
-CREATE DATABASE accounts;
-GRANT ALL ON accounts.* TO 'admin'@'%' IDENTIFIED BY 'admin123';
-FLUSH PRIVILEGES;
-```
-
-**Why this matters:**  
-We're creating a dedicated database user with just the right permissions - not too much, not too little!
-
----
-
-## ⚡ Memcached Configuration (mc01)
-
-### Turbocharge Your App!
-
-```bash
-vagrant ssh mc01
-```
-
-**Installation:**
-```bash
-sudo dnf install memcached -y
-
-# Let everyone talk to our cache (in private network)
-sudo sed -i 's/127.0.0.1/0.0.0.0/' /etc/sysconfig/memcached
-
-# Fire it up!
-sudo systemctl start memcached
-sudo systemctl enable memcached
-```
-
-**Performance Tip:**  
-Want more speed? Give Memcached more memory! Edit `/etc/sysconfig/memcached` and change `-m 64` to `-m 512` (MB).
-
----
-
-## 🐇 RabbitMQ Setup (rmq01)
-
-### Your Message Highway!
-
-```bash
-vagrant ssh rmq01
-```
-
-**Installation Party:**
-```bash
-sudo dnf install rabbitmq-server -y
-sudo systemctl start rabbitmq-server
-sudo systemctl enable rabbitmq-server
-```
-
-**Create a Message Admin:**
-```bash
-sudo rabbitmqctl add_user test test
-sudo rabbitmqctl set_user_tags test administrator
-sudo rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
-```
-
-**Cool Trick:**  
-Want to see what's happening? Enable the management plugin:
-```bash
-sudo rabbitmq-plugins enable rabbitmq_management
-```
-Then visit: `http://192.168.56.13:15672`
-
----
-
-## 🚀 Tomcat Application Server (app01)
-
-### Where Java Magic Happens!
-
-```bash
-vagrant ssh app01
-```
-
-**Java Installation:**
-```bash
-sudo dnf install java-17-openjdk -y
-```
-
-**Tomcat Setup:**
-```bash
-wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.26/bin/apache-tomcat-10.1.26.tar.gz
-tar xzvf apache-tomcat-*.tar.gz
-sudo mv apache-tomcat-10.1.26 /opt/tomcat
-```
-
-**Create a System Service:**
-```bash
-sudo vi /etc/systemd/system/tomcat.service
-```
-Paste this (your Tomcat's birth certificate!):
-
-```ini
-[Unit]
-Description=Tomcat Service
-After=network.target
-
-[Service]
-User=tomcat
-Group=tomcat
-Environment="JAVA_HOME=/usr/lib/jvm/jre-17-openjdk"
-ExecStart=/opt/tomcat/bin/catalina.sh run
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-**Start Your Engine:**
-```bash
-sudo systemctl daemon-reload
-sudo systemctl start tomcat
-sudo systemctl enable tomcat
-```
-
----
-
-## 🌐 Nginx Web Server (web01)
-
-### Your Digital Doorman!
-
-```bash
-vagrant ssh web01
-```
-
-**Installation:**
-```bash
-sudo apt update
-sudo apt install nginx -y
-```
-
-**Configuration Magic:**
-```bash
-sudo vi /etc/nginx/sites-available/vproapp
-```
-
-Paste this traffic-directing masterpiece:
-
-```nginx
-upstream app_servers {
-    server app01:8080;
-}
-
-server {
-    listen 80;
-    
-    location / {
-        proxy_pass http://app_servers;
-        proxy_set_header Host $host;
-    }
-}
-```
-
-**Activate It:**
-```bash
-sudo ln -s /etc/nginx/sites-available/vproapp /etc/nginx/sites-enabled/
-sudo systemctl restart nginx
-```
-
----
-
-## 🎉 Verification Time!
-
-**The Moment of Truth:**  
-Open your browser to:  
-👉 [http://192.168.56.11](http://192.168.56.11)
-
-**Login Credentials:**
-- Username: `admin_vp`
-- Password: `admin_vp`
-
-**Success Looks Like:**  
-A beautiful dashboard showing all systems working together!
-
----
-
-## 🧠 Knowledge Check
-
-**Pop Quiz!**  
-1. Why do we use Nginx in front of Tomcat?  
-2. What's the purpose of Memcached in our setup?  
-3. How does RabbitMQ help our application?
-
-*(Answers at the bottom!)*
-
----
-
-## 🚨 Troubleshooting Guide
-
-**Problem:** Can't access the app  
-✅ Check: `sudo systemctl status nginx` on web01  
-✅ Check: `sudo journalctl -u tomcat` on app01  
-
-**Problem:** Database connection issues  
-✅ Verify: `mysql -u admin -padmin123 -h db01`  
-
-**Problem:** RabbitMQ not working  
-✅ Try: `sudo rabbitmqctl status`
-
----
-
-## 🏆 Congratulations!
-
-You've just built a **professional Java stack**! Here's your next mission:
-
-1. **Automate it** with Ansible  
-2. **Monitor it** with Prometheus+Grafana  
-3. **Scale it** by adding more app servers  
-
-**Quiz Answers:**  
-1. Nginx handles traffic better and can do SSL  
-2. Memcached speeds up data access  
-3. RabbitMQ manages background tasks efficiently  
-
----
-
-## 💬 Let's Connect!
-
-Questions? Ideas?  
-📧 [your-email@example.com](mailto:your-email@example.com)  
-🐦 [@yourhandle](https://twitter.com/yourhandle)  
-
-Leave a ⭐ if this helped you!  
-
-[![Deploy Like a Pro](https://via.placeholder.com/600x200?text=Your+DevOps+Journey+Starts+Here)]()  
-
-```
-
-This version includes:
-1. Engaging, conversational tone like a mentor explaining
-2. Visual metaphors and analogies
-3. Interactive elements (quiz, troubleshooting)
-4. Clear progression with emoji milestones
-5. Professional yet friendly language
-6. Motivation and next steps
-7. Proper GitHub formatting with headers and code blocks
-
-It transforms a technical README into an engaging learning journey while keeping all the technical accuracy. The structure guides beginners through concepts before commands, and explains the "why" behind each step.
-
-
-
-
 
 
