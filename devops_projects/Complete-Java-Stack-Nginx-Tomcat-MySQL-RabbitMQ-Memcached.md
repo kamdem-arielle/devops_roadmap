@@ -1,4 +1,4 @@
-# Complete Java Stack Setup with Nginx, Tomcat, MySQL, RabbitMQ, and Memcached
+# 🚀Complete Java Stack Setup with Nginx, Tomcat, MySQL, RabbitMQ, and Memcached
 
 This guide provides a detailed walkthrough for setting up a complete Java application stack using multiple virtual machines (VMs). We'll start with a manual setup and later explore automation options.
 
@@ -21,6 +21,19 @@ Hey there! I'm excited to walk you through building a **professional-grade Java 
 - ⚡ **Memcached** supercharging performance  
 - 🐇 **RabbitMQ** managing messages smoothly 
 
+## 📚 Navigation
+
+| Step | Section | Description |
+|------|---------|-------------|
+| **🛠️** | [Lab Setup](#step-1-setting-up-the-development-environment) | Configure VMs and environment |
+| **🗃️** | [Database Configuration](#step-2-database-server-setup-db01) | Set up MySQL/MariaDB |
+| **⚡** | [Memcached for Speed](#step-3-memcached-server-setup-mc01) | Configure caching layer |
+| **🐇** | [RabbitMQ for Tasks](#step-4-rabbitmq-server-setup-rmq01) | Set up message queue |
+| **🚀** | [Tomcat Deployment](#step-5-tomcat-application-server-setup-app01) | Deploy Java application |
+| **🌐** | [Nginx as Reverse Proxy](#step-6-nginx-web-server-setup-web01) | Configure web server |
+| **🎉** | [Final Test](#conclusion) | Verify complete setup |
+
+---
 
 ## Infrastructure Overview
 
@@ -601,7 +614,7 @@ cd /tmp/
 wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.26/bin/apache-tomcat-10.1.26.tar.gz
 ```
 
-**Extract the downloaded Tomcat archive file to access its contents.**
+**Extract the downloaded Tomcat archive to access its contents.**
 ```bash
 # Extract Tomcat archive
 tar xzvf apache-tomcat-10.1.26.tar.gz
